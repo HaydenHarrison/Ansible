@@ -1,0 +1,10 @@
+---
+- name: Enable services to be persistent through reboot 
+  hosts: homelab
+  become: true 
+
+  tasks:
+    - name: Enable service firewalld, and not touch the state
+      ansible.builtin.service:
+        name: firewalld
+        enabled: yes

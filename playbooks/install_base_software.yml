@@ -11,4 +11,7 @@
         - lvm2
         - autofs 
         - vim 
+        - docker 
+        - podman 
+        - git  
     
