@@ -1,0 +1,14 @@
+---
+- name: Install baseline software
+  hosts: homelab
+  become: true 
+
+  tasks:
+    - name: Install a list of packages
+      apt:
+        pkg:
+        - firewalld
+        - lvm2
+        - autofs 
+        - vim 
+    
