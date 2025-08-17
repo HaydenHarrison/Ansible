@@ -29,6 +29,6 @@
       minute: "0"
       hour: "0"
       user: hayden
-      job: "find /mnt/lvm/backups/backup/ -type file -mtime +180 -exec rm {};\"
+      job: "sudo find /mnt/lvm/backups/backup/ -type file -mtime +180 -exec rm {};\"
 
    
