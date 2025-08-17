@@ -1,0 +1,34 @@
+---
+
+- name: Create and schedule a monthly backup
+  hosts: homelab
+  become: true
+  tasks:
+
+  - name: Create the backup directory
+    ansible.builtin.file:
+      path: /mnt/lvm/backups
+      state: directory
+      mode: '0755'  
+
+  - name: Create and compress the backup file using CRON
+    ansible.builtin.cron:
+      name: Monthly backup cron job
+      month: "*"
+      weekday: "0"
+      minute: "0"
+      hour: "0"
+      user: hayden
+      job: "sudo tar -czvf /mnt/lvm/backups/backup-$(hostname)-$(date +%F) /etc"
+
+  - name: Remove backups older than 6 months
+     ansible.builtin.cron:
+      name: Monthly cleanup cron job
+      month: "*"
+      weekday: "0"
+      minute: "0"
+      hour: "0"
+      user: hayden
+      job: "find /mnt/lvm/backups/backup/ -type file -mtime +180 -exec rm {};\"
+
+   

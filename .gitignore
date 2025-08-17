@@ -3,3 +3,5 @@ firewall_config.yml
 group_vars
 vars
 inventory
+inventory/
+group_vars/
