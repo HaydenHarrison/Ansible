@@ -22,13 +22,11 @@
       job: "sudo tar -czvf /mnt/lvm/backups/backup-$(hostname)-$(date +%F) /etc"
 
   - name: Remove backups older than 6 months
-     ansible.builtin.cron:
+    ansible.builtin.cron:
       name: Monthly cleanup cron job
       month: "*"
       weekday: "0"
       minute: "0"
       hour: "0"
       user: hayden
-      job: "sudo find /mnt/lvm/backups/ -type file -mtime +180 -exec rm {};\"
-
-   
+      job: "sudo find /mnt/lvm/backups/ -type file -mtime +180 -exec rm {};\ "
