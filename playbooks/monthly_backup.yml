@@ -15,8 +15,9 @@
     ansible.builtin.cron:
       name: Monthly backup cron job
       month: "*"
-      weekday: "0"
+      weekday: "?"
       minute: "0"
+      day: "1"
       hour: "0"
       user: hayden
       job: "sudo tar -czvf /mnt/lvm/backups/backup-$(hostname)-$(date +%F) /etc"
@@ -25,8 +26,9 @@
     ansible.builtin.cron:
       name: Monthly cleanup cron job
       month: "*"
-      weekday: "0"
+      weekday: "?"
       minute: "0"
+      day: "1"
       hour: "0"
       user: hayden
-      job: "sudo find /mnt/lvm/backups/ -type file -mtime +180 -exec rm {};\ "
+      job: "sudo find /mnt/lvm/backups/ -type file -mtime +60 -exec rm {};\ "
