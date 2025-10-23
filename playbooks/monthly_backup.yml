@@ -19,7 +19,7 @@
       minute: "0"
       day: "1"
       hour: "0"
-      user: hayden
+      user: root
       job: "sudo tar -czvf /mnt/lvm/backups/backup-$(hostname)-$(date +%F) /etc"
 
   - name: Remove backups older than 6 months
@@ -30,5 +30,5 @@
       minute: "0"
       day: "1"
       hour: "0"
-      user: hayden
+      user: root
       job: "sudo find /mnt/lvm/backups/ -type file -mtime +60 -exec rm {};\ "
