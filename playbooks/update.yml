@@ -4,6 +4,13 @@
   become: true 
 
   tasks:
+
     - name: update and upgrade 
       ansible.builtin.shell:
         cmd: sudo apt update -y && sudo apt upgrade -y
+      when: ansible_distribution == 'Debian'
+
+    - name: update and upgrade 
+      ansible.builtin.shell:
+        cmd: sudo dnf update -y && sudo dnf upgrade -y
+      when: ansible_distribution == 'RedHat'

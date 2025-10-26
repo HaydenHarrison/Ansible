@@ -4,7 +4,7 @@
   become: true 
 
   tasks:
-    - name: Install a list of packages
+    - name: Install baseline software for Debian systems
       apt:
         pkg: "{{ item }}"
       loop:   
@@ -14,5 +14,18 @@
         - vim 
         - docker 
         - podman 
-        - git  
-    
+        - git 
+      when: ansible_distribution == 'Debian' 
+
+    - name: Install baseline software for Redhat systems
+      yum:
+        pkg: "{{ item }}"
+      loop:   
+        - firewalld
+        - lvm2
+        - autofs 
+        - vim 
+        - docker 
+        - podman 
+        - git 
+      when: ansible_distribution == 'RedHat'    
