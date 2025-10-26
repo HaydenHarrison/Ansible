@@ -5,3 +5,5 @@ vars
 inventory
 inventory/
 group_vars/
+.vscode
+test_play.yml
