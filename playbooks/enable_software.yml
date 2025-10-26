@@ -4,7 +4,14 @@
   become: true 
 
   tasks:
-    - name: Enable service firewalld, and not touch the state
+
+    - name: Enable services and ensure they are persistent through reboot
       ansible.builtin.service:
-        name: firewalld
+        name: "{{ item }}"
+        state: started
         enabled: yes
+      loop: 
+        - firewalld
+        - sshd 
+        - cron.service
+
