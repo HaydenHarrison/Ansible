@@ -6,7 +6,8 @@
   tasks:
     - name: Install a list of packages
       apt:
-        pkg:
+        pkg: "{{ item }}"
+      loop:   
         - firewalld
         - lvm2
         - autofs 

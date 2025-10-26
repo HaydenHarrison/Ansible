@@ -7,11 +7,7 @@
   tasks:
 
     - name: Modify the login banner located in /etc/motd on the homelab devices
-      blockinfile: 
-        path: /etc/motd
-        marker: ---
-        block: | 
-          -----------------------------------------------------------------------------
-          This is a personal information system. Authorized use only, punishable by law.
-          -----------------------------------------------------------------------------
-          {{ ansible_hostname }}
+      template: 
+       src:  /Users/hayden/development/ansible/templates/motd.j2
+       dest: /etc/motd
+       force: yes

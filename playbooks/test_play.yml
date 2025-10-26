@@ -1,0 +1,16 @@
+---
+
+- name: test a loop with some variables
+  hosts: node1
+  become: true 
+  gather_facts: false 
+  tasks: 
+
+    - name: Create test user 1 and 2 testing the loop method from groupvars
+      ansible.builtin.user:
+        name: "{{ item.name }}"
+        create_home: no
+        state: absent
+      loop: "{{ test_users }}"
+
+
