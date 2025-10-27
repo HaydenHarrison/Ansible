@@ -6,7 +6,8 @@
   tasks:
     - name: Install baseline software for Debian systems
       apt:
-        pkg: "{{ item }}"
+        name: "{{ item }}"
+        state: present
       loop:   
         - firewalld
         - lvm2
@@ -18,8 +19,9 @@
       when: ansible_distribution == 'Debian' 
 
     - name: Install baseline software for Redhat systems
-      yum:
-        pkg: "{{ item }}"
+      dnf:
+        name: "{{ item }}"
+        state: present
       loop:   
         - firewalld
         - lvm2
