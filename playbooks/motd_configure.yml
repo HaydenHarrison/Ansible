@@ -1,6 +1,6 @@
 ---
 - name: Set the login banner for cluster 
-  hosts: homelab 
+  hosts: prod 
   become: true 
   gather_facts: true
 

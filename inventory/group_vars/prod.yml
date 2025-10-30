@@ -1,0 +1,19 @@
+---
+
+
+prod_software:
+  - firewalld 
+  - autofs
+  - lvm2 
+  - vim 
+  - ansible 
+  - git 
+  - docker
+  - podman
+  - python3
+
+prod_services: 
+  - firewalld 
+  - cron.service
+  - autofs
+

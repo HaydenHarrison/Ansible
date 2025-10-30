@@ -1,0 +1,14 @@
+---
+
+all: 
+  children: 
+    prod: 
+      hosts: 
+        node0:
+          ansible_python_interpreter: /usr/bin/python3.11
+        node1:
+          ansible_python_interpreter: /usr/bin/python3.11 
+
+
+#node0 ansible_python_interpreter=/usr/bin/python3.11
+#node1 ansible_python_interpreter=/usr/bin/python3.11

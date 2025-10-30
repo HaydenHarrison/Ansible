@@ -1,10 +1,4 @@
 ansible.cfg
-firewall_config.yml
-group_vars
-vars
-inventory
-inventory/
-group_vars/
 .vscode
-test_play.yml
 vault/
+roles/

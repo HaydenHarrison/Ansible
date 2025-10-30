@@ -1,7 +1,7 @@
 ---
 
 - name: Create and schedule a monthly backup
-  hosts: homelab
+  hosts: prod
   become: true
   tasks:
 

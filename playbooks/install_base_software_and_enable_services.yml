@@ -1,0 +1,26 @@
+---
+- name: Install baseline software and make sure services are enabled 
+  hosts: prod
+  become: true 
+
+  tasks:
+    - name: Install baseline software for Debian systems
+      apt:
+        name: "{{ item }}"
+        state: latest
+      loop: "{{ prod_software }}"   
+      when: ansible_distribution == 'Debian' 
+
+    - name: Install baseline software for Redhat systems
+      dnf:
+        name: "{{ item }}"
+        state: latest
+      loop: "{{ prod_software }}"
+      when: ansible_distribution == 'RedHat'
+
+    - name: Enable services and ensure they are persistent through reboot
+      ansible.builtin.service:
+        name: "{{ item }}"
+        state: started
+        enabled: yes
+      loop: "{{ prod_services }}"

@@ -1,6 +1,6 @@
 ---
-- name: Update software for homelab cluster  
-  hosts: homelab 
+- name: Update software for home prod cluster  
+  hosts: prod 
   become: true 
 
   tasks:

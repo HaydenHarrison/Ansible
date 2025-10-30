@@ -1,7 +1,6 @@
 ---
 
-- import_playbook: install_base_software.yml 
-- import_playbook: enable_software.yml 
+- import_playbook: install_base_software_and_enable_services.yml 
 - import_playbook: firewall_config.yml
 - import_playbook: monthly_backup.yml
 - import_playbook: motd_configure.yml
