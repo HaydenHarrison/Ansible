@@ -2,3 +2,4 @@ ansible.cfg
 .vscode
 vault/
 roles/
+requirements.yml

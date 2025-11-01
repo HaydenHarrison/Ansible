@@ -31,4 +31,4 @@
       day: "1"
       hour: "0"
       user: root
-      job: "sudo find /mnt/lvm/backups/ -type file -mtime +60 -exec rm {};\ "
+      job: 'sudo find /mnt/lvm/backups/ -type f -mtime +60 -exec rm {} \;'
