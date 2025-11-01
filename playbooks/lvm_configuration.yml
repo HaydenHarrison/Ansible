@@ -1,0 +1,64 @@
+---
+
+- name: setup lvm on prod hosts 
+  hosts: prod 
+  become: true 
+  tasks: 
+    
+    - name: unmount disks if already mounted
+      mount: 
+        path: "/dev/{{ item }}"
+        state: unmounted
+      loop: "{{ disks }}"
+
+    - name: Create a mount directory if it does not exist
+      ansible.builtin.file:
+        path: /mnt/lvm
+        state: directory
+        owner: hayden 
+        group: hayden
+        mode: '4755'
+
+    - name: set up pvs for SDA and SDB
+      parted:
+        device: "/dev/{{ item }}"
+        flags: [lvm]
+        number: 1
+        part_end: "100%"
+        resize: true
+        state: present 
+      loop: "{{ disks }}"
+      when: 
+        - ansible_devices.sda.partitions.sda1 is not defined
+        - ansible_devices.sdb.partitions.sdb1 is not defined  
+
+    - name: Add new PVs to VG
+      community.general.lvg:
+        vg: vg-1
+        pvs:
+          - /dev/sda1
+          - /dev/sdb1
+        state: present
+   
+    - name: Create a logical volume the size of all remaining space in the volume group
+      community.general.lvol:
+        vg: vg-1
+        lv: pv-prod
+        active: true
+        size: 100%FREE
+        force: true
+
+    - name: Create a ext4 filesystem on LVM
+      community.general.filesystem:
+        fstype: ext4
+        resizefs: true
+        force: true
+        dev: /dev/vg-1/pv-prod
+       
+    - name: Mount LVM and configure fstab
+      ansible.posix.mount:
+        path: /mnt/lvm
+        src: /dev/vg-1/pv-prod
+        fstype: ext4
+        state: mounted
+
