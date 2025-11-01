@@ -43,7 +43,7 @@
     - name: Create a logical volume the size of all remaining space in the volume group
       community.general.lvol:
         vg: vg-1
-        lv: pv-prod
+        lv: lv-prod
         active: true
         size: 100%FREE
         force: true
@@ -53,12 +53,12 @@
         fstype: ext4
         resizefs: true
         force: true
-        dev: /dev/vg-1/pv-prod
+        dev: /dev/vg-1/lv-prod
        
     - name: Mount LVM and configure fstab
       ansible.posix.mount:
         path: /mnt/lvm
-        src: /dev/vg-1/pv-prod
+        src: /dev/vg-1/lv-prod
         fstype: ext4
         state: mounted
 
