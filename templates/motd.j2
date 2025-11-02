@@ -8,5 +8,9 @@ CPU_count: {{ ansible_processor_vcpus }}
 Time: {{ ansible_date_time.iso8601 }}
 Memory free: {{ ansible_memory_mb.real.free }}
 Memory total: {{ ansible_memory_mb.real.total }}
+{% for item in ansible_mounts%}
+{{ item.device }}: {{ item.size_available | human_readable }} available 
+{% endfor %}
+
 
 
