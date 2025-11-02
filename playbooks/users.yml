@@ -1,0 +1,32 @@
+---
+
+
+- name: Create users and groups 
+  hosts: prod 
+  become: true 
+  vars_files: /Users/hayden/development/ansible/inventory/users_groups.yml
+  tasks: 
+
+
+    - name: Create groups
+      ansible.builtin.group:
+        name: "{{ item }}"
+        state: present
+      loop: "{{ prod_groups }}"
+
+    - name: Add the users
+      ansible.builtin.user:
+        name: "{{ item.user }}"
+        shell: /bin/bash
+        groups: "{{ item.group }}"
+        append: yes
+      loop: "{{ prod_users }}"
+
+    - name: Validate the sudoers file before saving
+      ansible.builtin.lineinfile:
+        path: "/etc/sudoers.d/{{ item.user }}"
+        state: present
+        create: true
+        line: "{{ item.user }} ALL=(ALL) NOPASSWD: ALL"
+        validate: /usr/sbin/visudo -cf %s
+      loop: "{{ prod_users }}"

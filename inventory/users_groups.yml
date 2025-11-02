@@ -1,0 +1,21 @@
+---
+
+
+prod_groups: 
+  - admin
+  - hayden 
+  - echo
+
+
+prod_users: 
+
+  - user: hayden
+    group: hayden,admin,sudo
+
+  - user: admin
+    group: hayden,admin,sudo
+
+  - user: echo 
+    group: echo,sudo
+
+
