@@ -9,7 +9,9 @@
     ansible.builtin.file:
       path: /mnt/lvm/backups
       state: directory
-      mode: '0755'  
+      mode: '4755' 
+      owner: hayden
+      group: hayden  
 
   - name: Create and compress the backup file using CRON
     ansible.builtin.cron:
