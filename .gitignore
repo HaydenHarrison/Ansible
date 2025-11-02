@@ -3,3 +3,4 @@ ansible.cfg
 vault/
 roles/
 requirements.yml
+playbooks/test.yml

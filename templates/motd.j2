@@ -1,4 +1,12 @@
 -----------------------------------------------------------------------------
 This is a personal information system. Authorized use only, punishable by law.
 -----------------------------------------------------------------------------
-{{ ansible_hostname }}
+Host: {{ ansible_hostname }}
+IP_v4: {{ ansible_default_ipv4.address }}
+Distro: {{ ansible_distribution }}
+CPU_count: {{ ansible_processor_vcpus }}
+Time: {{ ansible_date_time.iso8601 }}
+Memory free: {{ ansible_memory_mb.real.free }}
+Memory total: {{ ansible_memory_mb.real.total }}
+
+
