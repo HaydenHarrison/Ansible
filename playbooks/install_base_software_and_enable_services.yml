@@ -9,14 +9,14 @@
         name: "{{ item }}"
         state: latest
       loop: "{{ prod_software }}"   
-      when: ansible_distribution == 'Debian' 
+      when: ansible_facts['distribution'] == 'Debian' 
 
     - name: Install baseline software for Redhat systems
       dnf:
         name: "{{ item }}"
         state: latest
       loop: "{{ prod_software }}"
-      when: ansible_distribution == 'RedHat'
+      when: ansible_facts['distribution'] == 'RedHat'
 
     - name: Enable services and ensure they are persistent through reboot
       ansible.builtin.service:

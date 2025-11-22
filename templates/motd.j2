@@ -1,15 +1,15 @@
 -----------------------------------------------------------------------------
 This is a personal information system. Authorized use only, punishable by law.
 -----------------------------------------------------------------------------
-Host: {{ ansible_hostname }}
-IP_v4: {{ ansible_default_ipv4.address }}
-Distro: {{ ansible_distribution }}
-CPU_count: {{ ansible_processor_vcpus }}
-Time: {{ ansible_date_time.iso8601 }}
-Memory free: {{ ansible_memory_mb.real.free }}
-Memory total: {{ ansible_memory_mb.real.total }}
-{% for item in ansible_mounts%}
-{{ item.device }}: {{ item.size_available | human_readable }} available 
+Host: {{ ansible_facts['hostname'] }}
+IP_v4: {{ ansible_facts['default_ipv4']['address'] }}
+Distro: {{ ansible_facts['distribution'] }}
+CPU_count: {{ ansible_facts['processor_vcpus'] }}
+Time: {{ ansible_facts['date_time']['iso8601'] }}
+Memory free: {{ ansible_facts['memory_mb']['real']['free'] }}
+Memory total: {{ ansible_facts['memory_mb']['real']['total'] }}
+{% for item in ansible_facts['mounts'] %}
+{{ item['device'] }}: {{ item['size_available'] | human_readable }} available 
 {% endfor %}
 
 

@@ -2,6 +2,6 @@
 ::1		localhost ip6-localhost ip6-loopback
 ff02::1		ip6-allnodes
 ff02::2		ip6-allrouters
-{% for host in groups.prod %}
-{{ hostvars[host].ansible_default_ipv4.address }} {{ host }} 
+{% for host in groups['prod'] %}
+{{ hostvars[host]['ansible_facts']['default_ipv4']['address'] }} {{ host }} 
 {% endfor %}
