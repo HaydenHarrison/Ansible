@@ -10,6 +10,9 @@
         path: "/dev/{{ item }}"
         state: unmounted
       loop: "{{ disks }}"
+      when: 
+        - ansible_facts['devices']['sda']['partitions']['sda1'] is not defined
+        - ansible_facts['devices']['sdb']['partitions']['sdb1'] is not defined
 
     - name: Create a mount directory if it does not exist
       ansible.builtin.file:
@@ -18,6 +21,9 @@
         owner: hayden 
         group: hayden
         mode: '4755'
+      when: 
+        - ansible_facts['devices']['sda']['partitions']['sda1'] is not defined
+        - ansible_facts['devices']['sdb']['partitions']['sdb1'] is not defined
 
     - name: set up pvs for SDA and SDB
       parted:
@@ -29,8 +35,8 @@
         state: present 
       loop: "{{ disks }}"
       when: 
-        - ansible_devices.sda.partitions.sda1 is not defined
-        - ansible_devices.sdb.partitions.sdb1 is not defined  
+        - ansible_facts['devices']['sda']['partitions']['sda1'] is not defined
+        - ansible_facts['devices']['sdb']['partitions']['sdb1'] is not defined
 
     - name: Add new PVs to VG
       community.general.lvg:
@@ -39,7 +45,10 @@
           - /dev/sda1
           - /dev/sdb1
         state: present
-   
+      when: 
+        - ansible_facts['devices']['sda']['partitions']['sda1'] is not defined
+        - ansible_facts['devices']['sdb']['partitions']['sdb1'] is not defined
+
     - name: Create a logical volume the size of all remaining space in the volume group
       community.general.lvol:
         vg: vg-1
@@ -47,6 +56,9 @@
         active: true
         size: 100%FREE
         force: true
+      when: 
+        - ansible_facts['devices']['sda']['partitions']['sda1'] is not defined
+        - ansible_facts['devices']['sdb']['partitions']['sdb1'] is not defined 
 
     - name: Create a ext4 filesystem on LVM
       community.general.filesystem:
@@ -54,11 +66,17 @@
         resizefs: true
         force: true
         dev: /dev/vg-1/lv-prod
-       
+      when: 
+        - ansible_facts['devices']['sda']['partitions']['sda1'] is not defined
+        - ansible_facts['devices']['sdb']['partitions']['sdb1'] is not defined 
+
     - name: Mount LVM and configure fstab
       ansible.posix.mount:
         path: /mnt/lvm
         src: /dev/vg-1/lv-prod
         fstype: ext4
         state: mounted
+      when: 
+        - ansible_facts['devices']['sda']['partitions']['sda1'] is not defined
+        - ansible_facts['devices']['sdb']['partitions']['sdb1'] is not defined      
 
