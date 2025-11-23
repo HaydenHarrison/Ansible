@@ -1,0 +1,11 @@
+---
+- name: Set up LVM on prod hosts by including the configuration plays, idempotently 
+  hosts: all
+  become: true
+  tasks: 
+
+    - import_playbook: /Users/hayden/development/ansible/playbooks/lvm_configuration.yml 
+      when: 
+        - "'prod' in group_names"
+        - ansible_facts['devices']['sda']['partitions']['sda1'] is not defined
+        - ansible_facts['devices']['sdb']['partitions']['sdb1'] is not defined
