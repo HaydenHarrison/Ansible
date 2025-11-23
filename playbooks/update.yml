@@ -1,6 +1,6 @@
 ---
 - name: Update software for home prod cluster  
-  hosts: prod 
+  hosts: all 
   become: true 
 
   tasks:
@@ -8,7 +8,9 @@
     - name: update and upgrade 
       ansible.builtin.shell:
         cmd: sudo apt update -y && sudo apt upgrade -y
-      when: ansible_facts['distribution'] == 'Debian'
+      when: 
+        - ansible_facts['distribution'] == 'Debian'
+        - "'prod' in group_names"
 
     - name: update and upgrade 
       ansible.builtin.shell:
