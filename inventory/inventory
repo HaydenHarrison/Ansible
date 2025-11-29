@@ -8,6 +8,7 @@ all:
       children:
         vpn:
           hosts: 
-            node0:  
+            localhost: 
+              ansible_connection: local   
 
 
