@@ -6,8 +6,8 @@ IP_v4: {{ ansible_facts['default_ipv4']['address'] }}
 Distro: {{ ansible_facts['distribution'] }}
 CPU_count: {{ ansible_facts['processor_vcpus'] }}
 Time: {{ ansible_facts['date_time']['iso8601'] }}
-Memory free: {{ ansible_facts['memory_mb']['real']['free'] }}
-Memory total: {{ ansible_facts['memory_mb']['real']['total'] }}
+Memory free: {{ ansible_facts['memory_mb']['real']['free'] | human_readable }}
+Memory total: {{ ansible_facts['memory_mb']['real']['total'] | human_readable }}
 {% for item in ansible_facts['mounts'] %}
 {{ item['device'] }}: {{ item['size_available'] | human_readable }} available 
 {% endfor %}
