@@ -6,13 +6,15 @@
   tasks:
 
     - name: update and upgrade for Debian systems  
-      ansible.builtin.shell:
-        cmd: sudo apt update -y && sudo apt upgrade -y
+      ansible.builtin.apt:
+        name: '*'
+        state: latest
       when: 
         - ansible_facts['distribution'] == 'Debian'
         - "'prod' in group_names"
 
     - name: update and upgrade for RHEL systems
-      ansible.builtin.shell:
-        cmd: sudo dnf update -y && sudo dnf upgrade -y
+      ansible.builtin.dnf:
+        name: '*'
+        state: latest
       when: ansible_facts['distribution'] == 'RedHat'
