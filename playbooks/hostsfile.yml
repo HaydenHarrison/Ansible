@@ -1,6 +1,6 @@
 ---
 - name: Create /etc/hosts file on managed nodes 
-  hosts: prod 
+  hosts: all 
   become: true 
   tasks: 
   
