@@ -3,16 +3,6 @@
 - name: initialize the cluster for k8s 
   hosts: node3
   become: true 
-  vars: 
-    kube_ports:
-      - 6443/tcp
-      - 2379-2380/tcp
-      - 10250/tcp
-      - 10259/tcp 
-      - 10257/tcp
-      - 30000-32767/tcp
-      - 443/tcp
-      - 8080/tcp 
   tasks: 
 
 
