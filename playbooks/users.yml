@@ -2,7 +2,7 @@
 
 
 - name: Create users and groups 
-  hosts: prod 
+  hosts: all 
   become: true 
   vars_files: /Users/hayden/development/ansible/inventory/users_groups.yml
   tasks: 

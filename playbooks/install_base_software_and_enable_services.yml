@@ -1,6 +1,6 @@
 ---
 - name: Install baseline software and make sure services are enabled 
-  hosts: prod
+  hosts: all
   become: true 
 
   tasks:

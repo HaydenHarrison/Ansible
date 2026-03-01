@@ -1,0 +1,20 @@
+- hosts: node0 
+  become: true 
+  tasks: 
+
+    - name: register command 
+      ansible.builtin.shell: 
+        cmd: "sudo vgs"
+      register: command_result 
+
+    - name: check output 
+      ansible.builtin.debug:
+        msg: "checks passed"
+      when: "'vg-1' in command_result.stdout"
+
+    - name: 
+      ansible.builtin.copy:
+        content: |
+          Developmental
+        dest: /tmp/testfile.txt
+         

@@ -1,0 +1,82 @@
+---
+
+- name: initialize the cluster for k8s 
+  hosts: node3
+  become: true 
+  vars: 
+    kube_ports:
+      - 6443/tcp
+      - 2379-2380/tcp
+      - 10250/tcp
+      - 10259/tcp 
+      - 10257/tcp
+      - 30000-32767/tcp
+      - 443/tcp
+      - 8080/tcp 
+  tasks: 
+
+
+    - name: turn off swap 
+      ansible.builtin.shell: 
+        cmd: "sudo swapoff -a"
+      when: ansible_facts['swaptotal_mb'] > 0
+      
+    - name: back up fstab
+      ansible.builtin.copy:
+        src: /etc/fstab
+        dest: /etc/fstab.bak
+        remote_src: yes
+
+    - name: remove swap from fstab 
+      ansible.builtin.lineinfile:
+        path: /etc/fstab
+        regexp: 'swap'
+        state: absent
+    - name: set up cron to diable pi swap job 1
+      ansible.builtin.cron:
+        name: disable swap 
+        special_time: reboot
+        job: "swapoff -a" 
+
+    - name: set up cron to diable pi swap job 2 
+      ansible.builtin.cron:
+        name: disable swap 2
+        special_time: reboot
+        job: "rm /var/swap" 
+
+    - name: install firewalld 
+      ansible.builtin.apt: 
+        name: firewalld
+        state: present
+
+    - name: update
+      ansible.builtin.apt: 
+        name: '*'
+        state: latest
+   
+    - name: enable firewalld 
+      ansible.builtin.service: 
+        name: firewalld
+        state: started
+        enabled: true
+
+    - name: Set up services 
+      ansible.posix.firewalld:
+        service: ssh
+        permanent: true
+        state: enabled
+      notify: restart_firewall
+
+    - name: Set up k8s ports 
+      ansible.posix.firewalld:
+        port: "{{ item }}"
+        permanent: true
+        state: enabled
+      loop: "{{ kube_ports }}"
+      notify: restart_firewall
+
+  handlers: 
+    - name: restart_firewall
+      ansible.builtin.service:
+        name: firewalld
+        state: restarted  

@@ -17,9 +17,6 @@ prod_services:
   - cron.service
   - autofs
 
-disks: 
-  - sda
-  - sdb
 
 
-ansible_python_interpreter: /usr/bin/python3.11 
+ansible_python_interpreter: /usr/bin/python3.13 

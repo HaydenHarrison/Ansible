@@ -1,7 +1,10 @@
 ---
 
 all: 
-  children: 
+  children:
+    k8s:
+      hosts:
+        node3: 
     prod: 
       hosts: 
         node1:
