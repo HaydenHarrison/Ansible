@@ -1,0 +1,12 @@
+[Unit]
+Description=NFS Mount for Cluster
+
+[Mount]
+What={{ nfs_server_ip }}:/srv/nfs/
+Where=/mnt/nfs
+Type=nfs
+Options=rw,soft,intr
+
+[Install]
+WantedBy=multi-user.target
+

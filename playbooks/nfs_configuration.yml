@@ -1,0 +1,91 @@
+- name: install and configure NFS for the cluster
+  hosts: node0 
+  become: true 
+  tasks: 
+
+    - name: Install required packages and tools
+      ansible.builtin.apt: 
+        name: "{{ item }}"
+        state: present
+      loop: 
+        - "nfs-kernel-server"
+        - "nfs-common"
+
+    - name: enable NFS server
+      ansible.builtin.service: 
+        name: nfs-server
+        state: started 
+        enabled: true
+
+    - name: configure export directories
+      ansible.builtin.file: 
+        name: "{{ item }}"
+        state: directory
+        owner: hayden 
+        group: hayden
+        mode: '2755'
+      loop: 
+        - "/srv/nfs/images"
+        - "/srv/nfs/resources"
+
+    - name: configure nfs to export shared directories with cluster network
+      ansible.builtin.lineinfile: 
+        path: /etc/exports
+        line: "{{ item }}"
+      loop: "{{ nfs_export_dirs }}"
+      notify: export-command
+
+    - name: daemon-reload 
+      ansible.builtin.systemd: 
+        daemon_reload: yes
+
+  handlers: 
+
+    - name: export-command 
+      ansible.builtin.shell: 
+        cmd: "exportfs -rav"
+        
+- name: install and configure NFS for the cluster
+  hosts: node1,node3
+  become: true 
+  vars_files: 
+    - /Users/hayden/development/ansible/inventory/group_vars/worker_nodes.yml
+  tasks: 
+
+    - name: Install required packages and tools
+      ansible.builtin.apt: 
+        name: "{{ item }}"
+        state: present
+      loop: 
+        - "nfs-common"
+
+    - name: configure mount directories
+      ansible.builtin.file: 
+        name: /mnt/nfs
+        state: directory
+        owner: hayden 
+        group: hayden
+        mode: '2755'
+
+    - name: copy over systemd mount file
+      ansible.builtin.template: 
+        src: /Users/hayden/development/ansible/templates/cluster_nfs_mount.j2 
+        dest: /etc/systemd/system/mnt-nfs.mount 
+
+    - name: copy over systemd amount file
+      ansible.builtin.template: 
+        src: /Users/hayden/development/ansible/templates/cluster_nfs_automount.j2 
+        dest: /etc/systemd/system/mnt-nfs.automount 
+
+    - name: daemon-reload 
+      ansible.builtin.systemd: 
+        daemon_reload: yes
+
+    - name: enable mount and automount
+      ansible.builtin.systemd:
+        name: "{{ item }}"
+        state: started
+        enabled: true 
+      loop: 
+        - "mnt-nfs.mount"
+        - "mnt-nfs.automount"

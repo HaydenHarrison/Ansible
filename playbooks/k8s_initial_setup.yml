@@ -22,6 +22,7 @@
         path: /etc/fstab
         regexp: 'swap'
         state: absent
+
     - name: set up cron to diable pi swap job 1
       ansible.builtin.cron:
         name: disable swap 
@@ -64,7 +65,6 @@
         state: enabled
       loop: "{{ kube_ports }}"
       notify: restart_firewall
-
 
     - name: Enable br_netfilter kernel module
       modprobe:
