@@ -5,4 +5,3 @@ roles/
 requirements.yml
 playbooks/test.yml
 test.yml
-playbooks/test.yml

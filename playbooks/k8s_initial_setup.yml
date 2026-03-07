@@ -1,6 +1,6 @@
 ---
 
-- name: initialize the cluster for k8s 
+- name: k8s dependencies setup (raspberry pis/all nodes). Does not include container runtime or kubernetes installation. 
   hosts: node3
   become: true 
   tasks: 
@@ -50,14 +50,14 @@
         state: started
         enabled: true
 
-    - name: Set up services 
+    - name: Set up SSH access on firewalld
       ansible.posix.firewalld:
         service: ssh
         permanent: true
         state: enabled
       notify: restart_firewall
 
-    - name: Set up k8s ports 
+    - name: Set up k8s ports for firewalld 
       ansible.posix.firewalld:
         port: "{{ item }}"
         permanent: true
@@ -65,6 +65,43 @@
       loop: "{{ kube_ports }}"
       notify: restart_firewall
 
+
+    - name: Enable br_netfilter kernel module
+      modprobe:
+        name: "{{ item }}"
+        state: present
+      become: True
+      loop:
+       - br_netfilter
+       - overlay
+    
+    - name: Enable packet forwarding on the node
+      sysctl:
+        name: "{{ item }}"
+        value: 1
+        sysctl_set: True
+        state: present
+        reload: yes
+      become: True
+      loop:
+       - "net.ipv4.ip_forward"
+       - "net.bridge.bridge-nf-call-iptables"
+       - "net.bridge.bridge-nf-call-ip6tables"
+    
+    - name: Persist br_netfilter kernell module loading (on reboot)
+      copy:
+        dest: "/etc/modules-load.d/{{ item }}.conf"
+        content: "{{ item }}"
+      become: True
+      loop:
+       - br_netfilter
+       - overlay
+ 
+    - name: Reload systemctl daemons
+      systemd:
+        daemon_reload: yes
+      become: True
+  
   handlers: 
     - name: restart_firewall
       ansible.builtin.service:
