@@ -1,0 +1,1 @@
+This repository contains the Ansible playbooks and configurations used to manage my 3-node Raspberry Pi cluster. This project serves as both a production environment for my personal services and a hands-on laboratory for mastering Red Hat Certified Engineer (RHCE) objectives.
