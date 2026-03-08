@@ -17,7 +17,7 @@
         state: directory
         owner: hayden 
         group: hayden
-        mode: '4755'
+        mode: '2755'
 
     - name: set up pvs for SDA and SDB
       parted:

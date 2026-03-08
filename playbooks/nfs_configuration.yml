@@ -1,4 +1,4 @@
-- name: install and configure NFS for the cluster
+- name: install and configure NFS for the cluster (server)
   hosts: node0 
   become: true 
   tasks: 
@@ -45,7 +45,7 @@
       ansible.builtin.shell: 
         cmd: "exportfs -rav"
         
-- name: install and configure NFS for the cluster
+- name: install and configure NFS for the cluster (clients)
   hosts: node1,node3
   become: true 
   vars_files: 

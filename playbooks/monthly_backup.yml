@@ -9,7 +9,7 @@
     ansible.builtin.file:
       path: /mnt/lvm/backups
       state: directory
-      mode: '4755' 
+      mode: '2755' 
       owner: hayden
       group: hayden  
 
