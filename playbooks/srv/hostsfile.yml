@@ -1,6 +1,6 @@
 ---
 - name: Create /etc/hosts file on managed nodes 
-  hosts: all 
+  hosts: srv 
   become: true 
   tasks: 
   

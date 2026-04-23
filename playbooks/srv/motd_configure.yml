@@ -1,6 +1,6 @@
 ---
 - name: Set the login banner for cluster 
-  hosts: prod 
+  hosts: srv 
   become: true 
   gather_facts: true
 

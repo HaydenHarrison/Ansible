@@ -1,7 +1,7 @@
 ---
 
 - name: setup lvm on prod hosts 
-  hosts: all 
+  hosts: srv 
   become: true 
   tasks: 
     

@@ -1,6 +1,6 @@
 ---
 - name: Install baseline software and make sure services are enabled 
-  hosts: all
+  hosts: srv
   become: true 
 
   tasks:

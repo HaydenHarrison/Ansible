@@ -1,6 +1,6 @@
 ---
 - name: Update software for home prod cluster  
-  hosts: all 
+  hosts: srv 
   become: true 
 
   tasks:

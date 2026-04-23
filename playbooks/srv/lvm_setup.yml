@@ -1,6 +1,6 @@
 ---
 - name: Set up LVM on prod hosts by including the configuration plays, idempotently 
-  hosts: all
+  hosts: srv
   become: true
   tasks: 
 

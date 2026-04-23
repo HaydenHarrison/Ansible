@@ -1,7 +1,7 @@
 ---
 
 - name: Create and schedule a monthly backup
-  hosts: prod
+  hosts: srv
   become: true
   tasks:
 
