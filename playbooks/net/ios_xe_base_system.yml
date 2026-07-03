@@ -1,0 +1,27 @@
+- name:  IOS base system configuration 
+  hosts: cisco 
+  become: true 
+  tasks: 
+  
+    - name: Configure hostname and domain name
+      cisco.ios.ios_system:
+        domain_name: homelab.local
+        domain_search:
+          - ansible.com
+          - redhat.com
+          - cisco.com
+      
+    - name: Configure name servers
+      cisco.ios.ios_system:
+        name_servers:
+          - 8.8.8.8
+          - 1.1.1.1
+
+    - name: configure the system login banner        
+      cisco.ios.ios_banner:
+        banner: login
+        text: |
+          THIS IS A PERSONAL INFORMATION SYSTEM. UNAUTHORIZED USE IS PROHIBITED AND PUNISHABLE BY LAW.
+        state: present
+
+

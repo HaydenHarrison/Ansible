@@ -1,0 +1,267 @@
+!
+version 16.12
+service timestamps debug datetime msec
+service timestamps log datetime msec
+service password-encryption
+service call-home
+platform qfp utilization monitor load 80
+platform punt-keepalive disable-kernel-core
+!
+hostname c1101-a-nova-01-01
+!
+boot-start-marker
+boot-end-marker
+!
+shell processing full
+!
+!
+aaa new-model
+!
+!
+aaa authentication login default local
+aaa authorization exec default local 
+!
+!
+!
+!
+!
+!
+aaa session-id common
+call-home
+ ! If contact email address in call-home is configured as sch-smart-licensing@cisco.com
+ ! the email address configured in Cisco Smart License Portal will be used as contact email address to send SCH notifications.
+ contact-email-addr sch-smart-licensing@cisco.com
+ profile "CiscoTAC-1"
+  active
+  destination transport-method http
+  no destination transport-method email
+!
+ip vrf MYVRF
+ rd 1:1
+ route-target export 1:1
+ route-target import 1:1
+!
+ip name-server 8.8.8.8 1.1.1.1
+ip domain list ansible.com
+ip domain list redhat.com
+ip domain list cisco.com
+no ip domain lookup
+ip domain name homelab.local
+ip dhcp excluded-address 10.10.10.254
+!
+ip dhcp pool local
+ network 10.10.10.0 255.255.255.0
+ default-router 192.168.1.1 
+ dns-server 192.168.1.1 
+ lease infinite
+!
+!
+!
+login on-success log
+ipv6 unicast-routing
+!
+!
+!
+!
+!
+!
+!
+subscriber templating
+multilink bundle-name authenticated
+!
+!
+!
+crypto pki trustpoint TP-self-signed-3557461650
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-3557461650
+ revocation-check none
+ rsakeypair TP-self-signed-3557461650
+!
+crypto pki trustpoint SLA-TrustPoint
+ enrollment pkcs12
+ revocation-check crl
+!
+!
+crypto pki certificate chain TP-self-signed-3557461650
+ certificate self-signed 01
+  30820330 30820218 A0030201 02020101 300D0609 2A864886 F70D0101 05050030 
+  31312F30 2D060355 04031326 494F532D 53656C66 2D536967 6E65642D 43657274 
+  69666963 6174652D 33353537 34363136 3530301E 170D3234 30313032 30303337 
+  31385A17 0D333030 31303130 30303030 305A3031 312F302D 06035504 03132649 
+  4F532D53 656C662D 5369676E 65642D43 65727469 66696361 74652D33 35353734 
+  36313635 30308201 22300D06 092A8648 86F70D01 01010500 0382010F 00308201 
+  0A028201 0100AE73 EFC46410 05B2F758 D9F27FAE 80377A33 ACEAD52A E13D0699 
+  1DEE90E5 A2A5800A 8E07AA22 7BA860F8 F315976C B2DFBAAD A45FC554 84C45BB5 
+  D2EE27A1 9F1E21A5 21DB39C6 ED8D1DE6 8F75B19B 6F012297 B51F1F38 823523F1 
+  88F04430 65354AFD C0472D0A 4373EFD9 876DD2EC FEB289F7 A531C837 0D6FDDCF 
+  3133FE89 F172B581 7043B532 34A5B49D 3CDECD25 EF70FF8A 4F97A07A 7CA9D3FD 
+  6E2B2B2B F0A73AD0 9990A411 DDE6C497 8F5AFE1F E5E5E50D ABE33A69 AEA5F3ED 
+  980FCF03 5D99D245 A2BC5D69 E6EBAF25 5DFF1B86 01E6B30B D58DB66A 72048E26 
+  B909E263 6D4AAE85 30A4551D 8946CBEE 9490EB00 A7D0D551 A0E5F85C 152850BB 
+  E1B6FB01 D8050203 010001A3 53305130 0F060355 1D130101 FF040530 030101FF 
+  301F0603 551D2304 18301680 14D37BC9 3C3D8EC6 05FF0107 E9A97EB4 18DE01BA 
+  78301D06 03551D0E 04160414 D37BC93C 3D8EC605 FF0107E9 A97EB418 DE01BA78 
+  300D0609 2A864886 F70D0101 05050003 82010100 841CF81D 4A32C9CF 4FCCE897 
+  A09F93A4 B16758FF FB1C638D 6857C5FC 090B0F73 934D58CD 27E6C027 79698F91 
+  82BA6DD7 2831ECA1 7EA8D7CA 7D9FF31D FEAAEE01 4007541F 7D0755A4 9E1ED79C 
+  3C48536C 685C75CA 88353E81 A782825F 8D72F02C DF49782E 8465E742 73763BCC 
+  12A7D2C6 73165445 CE4335F4 8557F0C1 BABBC92C 9152F36C A9834450 3A0A533E 
+  E5E4A39B 03932646 B686510E 8BC0AFED 689337BC 93C5D48F 25452337 FCD3E052 
+  5B1EDED2 58377B2B 43039230 D3B82F5B 42941899 FF39442F 802F4B24 D49028C6 
+  892B0E13 4D63057D E2E6D7E7 3F75C50A AE784400 CF962587 87437E5B 43676140 
+  119180AE 3C6D12ED 749C117D 3B5E897D 386474BB
+  	quit
+crypto pki certificate chain SLA-TrustPoint
+ certificate ca 01
+  30820321 30820209 A0030201 02020101 300D0609 2A864886 F70D0101 0B050030 
+  32310E30 0C060355 040A1305 43697363 6F312030 1E060355 04031317 43697363 
+  6F204C69 63656E73 696E6720 526F6F74 20434130 1E170D31 33303533 30313934 
+  3834375A 170D3338 30353330 31393438 34375A30 32310E30 0C060355 040A1305 
+  43697363 6F312030 1E060355 04031317 43697363 6F204C69 63656E73 696E6720 
+  526F6F74 20434130 82012230 0D06092A 864886F7 0D010101 05000382 010F0030 
+  82010A02 82010100 A6BCBD96 131E05F7 145EA72C 2CD686E6 17222EA1 F1EFF64D 
+  CBB4C798 212AA147 C655D8D7 9471380D 8711441E 1AAF071A 9CAE6388 8A38E520 
+  1C394D78 462EF239 C659F715 B98C0A59 5BBB5CBD 0CFEBEA3 700A8BF7 D8F256EE 
+  4AA4E80D DB6FD1C9 60B1FD18 FFC69C96 6FA68957 A2617DE7 104FDC5F EA2956AC 
+  7390A3EB 2B5436AD C847A2C5 DAB553EB 69A9A535 58E9F3E3 C0BD23CF 58BD7188 
+  68E69491 20F320E7 948E71D7 AE3BCC84 F10684C7 4BC8E00F 539BA42B 42C68BB7 
+  C7479096 B4CB2D62 EA2F505D C7B062A4 6811D95B E8250FC4 5D5D5FB8 8F27D191 
+  C55F0D76 61F9A4CD 3D992327 A8BB03BD 4E6D7069 7CBADF8B DF5F4368 95135E44 
+  DFC7C6CF 04DD7FD1 02030100 01A34230 40300E06 03551D0F 0101FF04 04030201 
+  06300F06 03551D13 0101FF04 05300301 01FF301D 0603551D 0E041604 1449DC85 
+  4B3D31E5 1B3E6A17 606AF333 3D3B4C73 E8300D06 092A8648 86F70D01 010B0500 
+  03820101 00507F24 D3932A66 86025D9F E838AE5C 6D4DF6B0 49631C78 240DA905 
+  604EDCDE FF4FED2B 77FC460E CD636FDB DD44681E 3A5673AB 9093D3B1 6C9E3D8B 
+  D98987BF E40CBD9E 1AECA0C2 2189BB5C 8FA85686 CD98B646 5575B146 8DFC66A8 
+  467A3DF4 4D565700 6ADF0F0D CF835015 3C04FF7C 21E878AC 11BA9CD2 55A9232C 
+  7CA7B7E6 C1AF74F6 152E99B7 B1FCF9BB E973DE7F 5BDDEB86 C71E3B49 1765308B 
+  5FB0DA06 B92AFE7F 494E8A9E 07B85737 F3A58BE1 1A48A229 C37C1E69 39F08678 
+  80DDCD16 D6BACECA EEBC7CF9 8428787B 35202CDC 60E4616A B623CDBD 230E3AFB 
+  418616A9 4093E049 4D10AB75 27E86F73 932E35B5 8862FDAE 0275156F 719BB2F0 
+  D697DF7F 28
+  	quit
+!
+crypto pki certificate pool
+ cabundle nvram:ios_core.p7b
+!
+!
+license udi pid C1101-4P sn FGL2518LT8B
+archive
+ path bootflash:c1101-a-nova-01-01-backup
+ maximum 3
+memory free low-watermark processor 70534
+!
+diagnostic bootup level minimal
+!
+spanning-tree extend system-id
+!
+username cisco privilege 15 secret 9 $9$xT1iEnMyKFYZ.U$5r2dq7kHFc24BsFoLSiIgp8MMAJ9CeNkxbQoMIDZpq2
+username hayden privilege 15 secret 9 $9$U2ssi9N6DqGkR.$va6ESxX0nY5D55Lad9mn2V0SRlrkvhR/VCKqbKCO8MM
+!
+redundancy
+ mode none
+!
+!
+vlan internal allocation policy ascending
+!
+lldp run
+!
+!
+!
+!
+!
+interface Loopback0
+ ip address 3.3.3.3 255.255.255.0
+!
+interface GigabitEthernet0/0/0
+ ip address dhcp
+ ip nat outside
+ negotiation auto
+!
+interface GigabitEthernet0/1/0
+ switchport access vlan 10
+ switchport mode access
+!
+interface GigabitEthernet0/1/1
+ switchport access vlan 10
+ switchport mode access
+!
+interface GigabitEthernet0/1/2
+ switchport access vlan 10
+ switchport mode access
+!
+interface GigabitEthernet0/1/3
+!
+interface Vlan1
+ no ip address
+!
+interface Vlan10
+ ip address 10.10.10.254 255.255.255.0
+ ip nat inside
+!
+router ospf 1
+ network 10.1.1.0 0.0.0.255 area 0
+!
+iox
+ip forward-protocol nd
+ip http server
+ip http authentication local
+ip http secure-server
+ip http client source-interface GigabitEthernet0/0/0
+ip nat inside source list 1 interface GigabitEthernet0/0/0 overload
+ip route 0.0.0.0 0.0.0.0 GigabitEthernet0/0/0
+ip ssh source-interface GigabitEthernet0/0/0
+ip ssh version 2
+ip ssh pubkey-chain
+  username hayden
+   key-hash ssh-rsa 6208C4D1C8B71CA7D9D18AFB5347FF71 hayden@Mac
+ip ssh server algorithm mac hmac-sha2-256 hmac-sha2-512
+ip ssh server algorithm encryption aes256-cbc aes256-ctr
+ip ssh server algorithm kex diffie-hellman-group14-sha1 diffie-hellman-group-exchange-sha1
+ip ssh server algorithm hostkey ssh-rsa x509v3-ssh-rsa
+ip ssh server algorithm authentication publickey password keyboard
+ip ssh server algorithm publickey ssh-rsa x509v3-ssh-rsa
+ip scp server enable
+!
+!
+ip access-list extended LOCAL_VLAN10
+ 10 permit ip 10.10.10.0 0.0.0.255 any
+!
+!
+ip prefix-list LOCAL description internal_ips
+ip prefix-list LOCAL seq 10 permit 10.10.0.0/16 ge 24
+ip access-list standard 1
+ 10 permit 10.10.10.0 0.0.0.255
+!
+!
+!
+!
+!
+!
+control-plane
+!
+banner login ^C
+THIS IS A PERSONAL INFORMATION SYSTEM. UNAUTHORIZED USE IS PROHIBITED AND PUNISHABLE BY LAW.
+^C
+banner motd ^C  This is a personal information system. Unauthorized use is prohibited, and punishable by law. ^C
+!
+line con 0
+ logging synchronous
+ stopbits 1
+line vty 0 4
+ exec-timeout 30 0
+ logging synchronous
+ transport input ssh
+line vty 5 15
+ exec-timeout 30 0
+ logging synchronous
+ transport input ssh
+!
+ntp server 192.168.4.1
+!
+!
+!
+!
+!
+end
+

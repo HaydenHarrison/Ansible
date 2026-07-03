@@ -1,0 +1,9 @@
+- name: Configure IOS with a .cfg template for netdevops 
+  hosts: cisco 
+  become: true 
+  tasks: 
+
+
+    - name: Push entire config file and archive for tracking
+      cisco.ios.ios_config:
+        src: /home/hayden/ansible/templates/net/configurations/c1101-a-nova-01-01-backup-july-2026-01.j2
