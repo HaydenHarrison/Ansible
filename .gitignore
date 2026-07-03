@@ -5,8 +5,6 @@ roles/
 requirements.yml
 playbooks/test.yml
 test.yml
+<<<<<<< HEAD
 .venv
 collections
-configurations
-configurations/
-templates/net/configurations/
