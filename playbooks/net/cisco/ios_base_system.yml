@@ -2,24 +2,59 @@
   hosts: cisco 
   become: true 
   tasks: 
-  
-    - name: Configure hostname and domain name
-      cisco.ios.ios_system:
-        domain_name: homelab.local
-        domain_search:
-          - ansible.com
-          - redhat.com
-          - cisco.com
-      
-    - name: Configure name servers
-      cisco.ios.ios_system:
-        name_servers:
-          - 8.8.8.8
-          - 1.1.1.1
 
-    - name: configure the system login banner        
+    - name: Configure system login banner        
       cisco.ios.ios_banner:
         banner: login
         text: |
           THIS IS A PERSONAL INFORMATION SYSTEM. UNAUTHORIZED USE IS PROHIBITED AND PUNISHABLE BY LAW.
         state: present
+
+    - name: Configure Hostname and Global Settings
+      cisco.ios.ios_config:
+        lines:
+          - hostname {{ inventory_hostname }}
+          - ip domain-name homelab.local
+          - ip routing
+          - ipv6 unicast-routing
+          - ip subnet-zero
+          - no ip domain-lookup
+          - service password-encryption
+          - lldp run
+          - ip ssh version 2
+            # - ip cef
+          - ip scp server enable
+          - ip name-server 8.8.8.8 1.1.1.1
+          - ip domain list cisco.com
+        match: none
+
+    - name: Secure Control Plane (Crypto and AAA)
+      cisco.ios.ios_config:
+        lines:
+          - crypto key generate rsa modulus 2048
+          - aaa new-model
+          - aaa authentication login default local
+          - aaa authorization exec default local
+        match: none
+
+          #    - name: Users
+          #      cisco.ios.ios_config:
+          #        lines:
+          #          - username {{ item.name }}  privilege 15 algorithm scrypt secret {{ item.login_secret }}
+          #        match: none
+          #      loop: "{{ netops_entities }}" 
+
+    - name: Configure Console and VTY Lines
+      cisco.ios.ios_config:
+        parents: "{{ item.line }}"
+        lines:
+          - exec-timeout 30 0
+          - logging synchronous
+          - transport input {{ item.transport }}
+      loop:
+        # - { line: 'line con 0', transport: 'none' }
+        - { line: 'line vty 0 15', transport: 'ssh' }
+
+    - name: Save Running Configuration to Startup Configuration
+      cisco.ios.ios_config:
+        save_when: always
