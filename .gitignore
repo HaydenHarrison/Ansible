@@ -5,9 +5,5 @@ roles/
 requirements.yml
 playbooks/test.yml
 test.yml
-<<<<<<< HEAD
-<<<<<<< HEAD
 .venv
 collections
-=======
->>>>>>> parent of 0d814e4 (net plaoybooks)
