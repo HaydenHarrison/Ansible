@@ -6,5 +6,5 @@
 
     - name: Push entire config file and archive for tracking
       cisco.ios.ios_config:
-        config: "{{ lookup('ansible.builtin.template', '/home/hayden/ansible/templates/net/cisco/c1101-a-nova-01-01-backup-july-2026-01.j2') }}"
+        config: "{{ lookup('ansible.builtin.template', '/home/hayden/ansible/templates/net/cisco/' + inventory_hostname + '.j2') }}"
         save_when: changed
