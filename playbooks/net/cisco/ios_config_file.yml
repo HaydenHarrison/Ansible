@@ -1,4 +1,4 @@
-- name: Configure IOS with a .cfg template for netdevops 
+- name: Configure IOS with a template 
   hosts: cisco 
   become: true 
   tasks: 
