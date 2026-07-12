@@ -8,6 +8,6 @@
 
     - name: Modify the login banner located in /etc/motd on the homelab devices
       template: 
-       src:  /Users/hayden/development/ansible/templates/motd.j2
+       src:  /home/hayden/ansible/templates/srv/motd.j2
        dest: /etc/motd
        force: yes

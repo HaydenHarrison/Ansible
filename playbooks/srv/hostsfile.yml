@@ -6,5 +6,5 @@
   
     - name: Create hosts file using j2 template 
       template: 
-        src: /Users/hayden/development/ansible/templates/hostsfile.j2
+        src: /home/hayden/ansible/templates/srv/hostsfile.j2
         dest: /etc/hosts

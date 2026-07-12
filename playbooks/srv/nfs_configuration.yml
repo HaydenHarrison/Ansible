@@ -69,12 +69,12 @@
 
     - name: copy over systemd mount file
       ansible.builtin.template: 
-        src: /Users/hayden/development/ansible/templates/cluster_nfs_mount.j2 
+        src: /home/hayden/ansible/templates/srv/cluster_nfs_mount.j2 
         dest: /etc/systemd/system/mnt-nfs.mount 
 
     - name: copy over systemd amount file
       ansible.builtin.template: 
-        src: /Users/hayden/development/ansible/templates/cluster_nfs_automount.j2 
+        src: /home/hayden/ansible/templates/srv/cluster_nfs_automount.j2 
         dest: /etc/systemd/system/mnt-nfs.automount 
 
     - name: daemon-reload 
