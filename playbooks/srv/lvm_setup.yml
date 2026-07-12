@@ -4,7 +4,7 @@
   become: true
   tasks: 
 
-    - import_playbook: /Users/hayden/development/ansible/playbooks/lvm_configuration.yml 
+    - import_playbook: /home/hayden/ansible/playbooks/srv/lvm_configuration.yml 
       when: 
         - "'prod' in group_names"
         - ansible_facts['devices']['sda']['partitions']['sda1'] is not defined

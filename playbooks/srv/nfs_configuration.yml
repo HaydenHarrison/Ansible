@@ -49,7 +49,7 @@
   hosts: node1,node3
   become: true 
   vars_files: 
-    - /Users/hayden/development/ansible/inventory/group_vars/worker_nodes.yml
+    - /home/hayden/ansible/inventory/group_vars/worker_nodes.yml
   tasks: 
 
     - name: Install required packages and tools

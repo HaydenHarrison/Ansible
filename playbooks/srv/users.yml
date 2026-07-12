@@ -4,7 +4,7 @@
 - name: Create users and groups 
   hosts: srv 
   become: true 
-  vars_files: /Users/hayden/development/ansible/inventory/users_groups.yml
+  vars_files: /home/hayden/ansible/inventory/users_groups.yml
   tasks: 
 
 
