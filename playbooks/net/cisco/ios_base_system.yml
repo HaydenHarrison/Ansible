@@ -17,15 +17,16 @@
           - ip domain-name homelab.local
           - ip routing
           - ipv6 unicast-routing
+          - ip multicast-routing 
           - ip subnet-zero
           - no ip domain-lookup
           - service password-encryption
           - lldp run
           - ip ssh version 2
             # - ip cef
-          - ip scp server enable
           - ip name-server 8.8.8.8 1.1.1.1
           - ip domain list cisco.com
+          - errdisable recovery cause psecure-violation
         match: none
 
     - name: Secure Control Plane (Crypto and AAA)
@@ -35,6 +36,7 @@
           - aaa new-model
           - aaa authentication login default local
           - aaa authorization exec default local
+          - ip scp server enable
         match: none
 
           #    - name: Users
